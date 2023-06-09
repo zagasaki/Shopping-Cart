@@ -1,0 +1,4 @@
+{
+    "dbURI": "mongodb+srv://bintang:123@cluster0.gzdfphf.mongodb.net/master",
+    "jwtSecret":"qwertyuiop"
+  }
