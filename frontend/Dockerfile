@@ -1,18 +1,24 @@
-# frontend/Dockerfile
-FROM node:16
+# Gunakan image Node.js sebagai base image
+FROM node:18
 
+# Set working directory
 WORKDIR /app
 
+# Copy package.json dan package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
+# Copy semua file source code ke dalam container
 COPY . .
 
+# Build aplikasi React
 RUN npm run build
 
-FROM nginx:alpine
-COPY --from=0 /app/build /usr/share/nginx/html
-
+# Expose port untuk server frontend
 EXPOSE 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+# Gunakan nginx untuk serving frontend
+RUN npm install -g serve
+CMD ["serve", "-s", "build", "-l", "3000"]

@@ -23,7 +23,7 @@ function Home() {
             />
           ))
         ) : (
-          <p>No items available</p> // Pesan alternatif jika items kosong
+          <p>No items available</p> 
         )}
       </Row>
     </div>

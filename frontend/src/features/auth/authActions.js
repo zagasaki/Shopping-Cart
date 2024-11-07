@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
 export const registerUser = createAsyncThunk(
   'user/register',
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -12,7 +14,7 @@ export const registerUser = createAsyncThunk(
       };
 
       const response = await axios.post(
-        '/api/register',
+        `${apiUrl}/api/register`, // Menggunakan template string yang benar
         { name, email, password },
         config
       );
@@ -36,15 +38,17 @@ export const userLogin = createAsyncThunk(
         }
       };
 
-      return await axios
-        .post('/api/login', { email, password }, config)
-        .then(response => {
-          if (response.data.userToken) {
-            localStorage.setItem('userToken', response.data.userToken);
-          }
+      const response = await axios.post(
+        `${apiUrl}/api/login`, // Menambahkan apiUrl di sini
+        { email, password },
+        config
+      );
 
-          return response.data;
-        });
+      if (response.data.userToken) {
+        localStorage.setItem('userToken', response.data.userToken);
+      }
+
+      return response.data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
@@ -66,9 +70,15 @@ export const getUserDetails = createAsyncThunk(
         }
       };
 
-      const { data } = await axios.get('/api/profile', config);
+      const { data } = await axios.get(`${apiUrl}/api/profile`, config); // Menambahkan apiUrl di sini
 
       return data;
-    } catch (error) {}
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
   }
 );
