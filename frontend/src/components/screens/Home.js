@@ -11,19 +11,24 @@ function Home() {
   return (
     <div>
       <Row>
-        {items.map(item => (
-          <Product
-            key={item._id}
-            imgUrl={item.img}
-            title={item.title}
-            price={item.price}
-            productId={item._id}
-            userId={userInfo?._id}
-          />
-        ))}
+        {items && items.length > 0 ? (
+          items.map(item => (
+            <Product
+              key={item._id}
+              imgUrl={item.img}
+              title={item.title}
+              price={item.price}
+              productId={item._id}
+              userId={userInfo?._id}
+            />
+          ))
+        ) : (
+          <p>No items available</p> // Pesan alternatif jika items kosong
+        )}
       </Row>
     </div>
   );
+  
 }
 
 export default Home;

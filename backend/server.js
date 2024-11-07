@@ -30,7 +30,7 @@ res.sendFile(path.resolve(__dirname,'client','build','index.html'));
 */
 
 //MongoDB connection
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect("mongodb+srv://bintang:123@cluster0.gzdfphf.mongodb.net/master", {
