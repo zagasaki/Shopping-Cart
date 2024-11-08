@@ -1,10 +1,9 @@
-version: "3.8"
-
 services:
   backend:
     build: ./backend
+    image: ${{ secrets.DOCKER_USERNAME }}/backend-app:latest
     ports:
-      - "5000:5000"  # Membuka port 5000 pada host agar dapat diakses
+      - "5000:5000"
     environment:
       - NODE_ENV=production
     networks:
@@ -12,15 +11,12 @@ services:
 
   frontend:
     build: ./frontend
+    image: ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
     ports:
-      - "3000:3000"  # Membuka port 3000 pada host agar dapat diakses
+      - "3000:3000"
     depends_on:
-      - backend  # Menunggu backend siap sebelum frontend mulai
+      - backend
     environment:
-      - REACT_APP_BACKEND_URL=http://backend:5000  # URL backend yang digunakan oleh frontend
+      - REACT_APP_BACKEND_URL=http://backend:5000
     networks:
       - app-network
-
-networks:
-  app-network:
-    driver: bridge  # Gunakan bridge network agar frontend dan backend dapat berkomunikasi
