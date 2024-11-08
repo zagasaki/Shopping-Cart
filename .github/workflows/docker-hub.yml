@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to Docker Hub
+name: Build and Push Frontend and Backend Docker Images to Docker Hub
 on:
   push:
     branches: [ "main" ]
@@ -6,33 +6,26 @@ on:
     branches: [ "main" ]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
-  # dockerhub.repository as <account>/<repo>
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/node-client_app
+  FRONTEND_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/frontend-app
+  BACKEND_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/backend-app
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker compose build --no-cache --force-rm
 
-  test:
+      - name: Build frontend Docker image
+        run: docker build -t ${{ env.FRONTEND_IMAGE_NAME }} ./frontend
+
+      - name: Build backend Docker image
+        run: docker build -t ${{ env.BACKEND_IMAGE_NAME }} ./backend
+
+  push_to_registry:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Test the Docker image
-        run: docker compose up -d
-
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -43,16 +36,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Push frontend Docker image to Docker Hub
+        run: |
+          docker tag ${{ env.FRONTEND_IMAGE_NAME }} ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+          docker push ${{ env.FRONTEND_IMAGE_NAME }}:latest
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ github.workspace }}
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Push backend Docker image to Docker Hub
+        run: |
+          docker tag ${{ env.BACKEND_IMAGE_NAME }} ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+          docker push ${{ env.BACKEND_IMAGE_NAME }}:latest
