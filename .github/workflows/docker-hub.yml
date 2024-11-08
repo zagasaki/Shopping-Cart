@@ -8,8 +8,8 @@ on:
 
 env:
   REGISTRY: docker.io
-  FRONTEND_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/frontend-app
-  BACKEND_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/backend-app
+  FRONTEND_IMAGE_NAME: bintangganteng/frontend-app
+  BACKEND_IMAGE_NAME: bintangganteng/backend-app
 
 jobs:
   build:
