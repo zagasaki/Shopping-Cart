@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build and push frontend imageeeeeeeeeeeeeeeeeeeeeee
+      # Build and push frontend image
       - name: Extract metadata for frontend
         id: frontend_meta
         uses: docker/metadata-action@v4
