@@ -17,7 +17,7 @@ app.use('/api', itemRoutes);
 app.use('/api', cartRoutes);
 
 app.get('/', (req, res) => {
-  res.send('frans ganteng');
+  res.send('backend is running');
 });
 
 /*production environment
