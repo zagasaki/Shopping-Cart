@@ -17,7 +17,7 @@ app.use('/api', itemRoutes);
 app.use('/api', cartRoutes);
 
 app.get('/', (req, res) => {
-  res.send('ini adalah backend');
+  res.send('bintang ganteng');
 });
 
 /*production environment
