@@ -11,7 +11,7 @@ function Navigation() {
   return (
     <Nav>
       <Link to="/">
-        <Logo>Toko Maria</Logo>
+        <Logo>Toko</Logo>
       </Link>
       <Container>
         <Item>

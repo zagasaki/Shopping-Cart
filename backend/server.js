@@ -17,7 +17,7 @@ app.use('/api', itemRoutes);
 app.use('/api', cartRoutes);
 
 app.get('/', (req, res) => {
-  res.send('backend sedang berjalan');
+  res.send('selamat datang di backend kami');
 });
 
 /*production environment

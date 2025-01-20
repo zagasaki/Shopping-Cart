@@ -21,6 +21,9 @@ spec:
           image: bintangganteng/frontend-app:main
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 400m
 ---
 apiVersion: v1
 kind: Service
@@ -32,7 +35,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 3000
   type: NodePort
 
 # Backend Deployment and Service
@@ -58,6 +61,9 @@ spec:
           image: bintangganteng/backend-app:main
           ports:
             - containerPort: 5000
+          resources:
+            requests:
+              cpu: 400m
 ---
 apiVersion: v1
 kind: Service
@@ -69,7 +75,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 5000
   type: NodePort
 
 # Horizontal Pod Autoscaler for Frontend
