@@ -54,27 +54,3 @@ jobs:
       - name: Push backend Docker image
         run: |
           docker push ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
-
-  deploy_to_kubernetes:
-    runs-on: ubuntu-latest
-    needs: push_to_registry
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: "latest"
-
-      - name: Update Frontend Deployment
-        run: |
-          kubectl set image bintangganteng/frontend-app:main
-
-      - name: Update Backend Deployment
-        run: |
-          kubectl set image bintangganteng/backend-app:main
-
-      - name: Verify Deployments
-        run: |
-          kubectl rollout status deployment/frontend-deployment
-          kubectl rollout status deployment/backend-deployment
